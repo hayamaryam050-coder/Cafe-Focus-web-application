@@ -706,7 +706,7 @@
     { id:'philosophy', icon:'🦉', name:'Philosophy Nook', sub:'Ideas & essays' },
   ];
 
-  const SEASONAL_ITEMS = {
+  const SEASONAL_DRINKS = {
     spring: [
       { id:'sakuralatte', emoji:'🌸', name:'Sakura Blossom Latte', minutes:25, desc:'Spring seasonal special', night:false },
       { id:'cherryblossommatcha', emoji:'🌸', name:'Cherry Blossom Matcha', minutes:20, desc:'Spring seasonal special', night:false },
@@ -725,6 +725,25 @@
     ],
   };
 
+  const SEASONAL_TREATS = {
+    spring: [
+      { id:'sakuramochi', emoji:'🍡', name:'Sakura Mochi', minutes:20, desc:'Spring seasonal treat', night:false },
+      { id:'cherryblossomcupcake', emoji:'🧁', name:'Cherry Blossom Cupcake', minutes:25, desc:'Spring seasonal treat', night:false },
+    ],
+    summer: [
+      { id:'peachcobbler', emoji:'🍑', name:'Peach Cobbler', minutes:30, desc:'Summer seasonal treat', night:false },
+      { id:'icedlemonbar', emoji:'🍋', name:'Iced Lemon Bar', minutes:20, desc:'Summer seasonal treat', night:false },
+    ],
+    autumn: [
+      { id:'pumpkinpie', emoji:'🎃', name:'Pumpkin Pie', minutes:35, desc:'Autumn seasonal treat', night:false },
+      { id:'maplepecantart', emoji:'🍁', name:'Maple Pecan Tart', minutes:30, desc:'Autumn seasonal treat', night:false },
+    ],
+    winter: [
+      { id:'gingerbreadcookie', emoji:'🍪', name:'Gingerbread Cookie', minutes:20, desc:'Winter seasonal treat', night:false },
+      { id:'peppermintbrownie', emoji:'🍬', name:'Peppermint Brownie', minutes:25, desc:'Winter seasonal treat', night:false },
+    ],
+  };
+
   function getSeason(d = new Date()){
     const m = d.getMonth(); // 0=Jan
     if(m>=2 && m<=4) return 'spring';   // Mar-May
@@ -735,7 +754,9 @@
 
   const SEASON_LABELS = { spring:'🌸 Spring', summer:'☀️ Summer', autumn:'🍁 Autumn', winter:'❄️ Winter' };
   const CURRENT_SEASON = getSeason();
-  const SEASONAL_TODAY = SEASONAL_ITEMS[CURRENT_SEASON];
+  const SEASONAL_TODAY_DRINKS = SEASONAL_DRINKS[CURRENT_SEASON];
+  const SEASONAL_TODAY_TREATS = SEASONAL_TREATS[CURRENT_SEASON];
+  const SEASONAL_TODAY = [...SEASONAL_TODAY_DRINKS, ...SEASONAL_TODAY_TREATS];
 
   const MENU = [...DRINKS, ...TREATS, ...SEASONAL_TODAY];
 
@@ -1331,10 +1352,23 @@
             }).join('')}
           </div>
 
-          <h2 style="margin-top:18px;">${SEASON_LABELS[CURRENT_SEASON]} Specials</h2>
+          <h2 style="margin-top:18px;">${SEASON_LABELS[CURRENT_SEASON]} Specials — Drinks</h2>
           <div class="menu-list">
-            ${SEASONAL_TODAY.map(m => `
+            ${SEASONAL_TODAY_DRINKS.map(m => `
               <div class="menu-item ${state.selectedDrink===m.id?'selected':''}" data-item="${m.id}" data-kind="drink">
+                <span class="emoji">${m.emoji}</span>
+                <div class="info">
+                  <div class="name">${m.name}</div>
+                  <div class="desc">${m.desc}</div>
+                </div>
+                <span class="time">${m.minutes}m</span>
+              </div>`).join('')}
+          </div>
+
+          <h2 style="margin-top:18px;">${SEASON_LABELS[CURRENT_SEASON]} Specials — Treats</h2>
+          <div class="menu-list">
+            ${SEASONAL_TODAY_TREATS.map(m => `
+              <div class="menu-item ${state.selectedTreat===m.id?'selected':''}" data-item="${m.id}" data-kind="treat">
                 <span class="emoji">${m.emoji}</span>
                 <div class="info">
                   <div class="name">${m.name}</div>
